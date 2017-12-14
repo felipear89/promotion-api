@@ -46,8 +46,13 @@ public class Campaign {
         this.end = end;
     }
 
-    public boolean isSamePeriod(LocalDate start, LocalDate end) {
-        return this.start.isEqual(start) && this.end.isEqual(end);
+    private boolean isOutPeriod(LocalDate otherStartDate, LocalDate otherEndDate) {
+        return (otherStartDate.isBefore(start) && otherEndDate.isBefore(start)) ||
+                (otherStartDate.isAfter(end) && otherEndDate.isAfter(end));
+    }
+
+    public boolean isInPeriod(LocalDate otherStartDate, LocalDate otherEndDate) {
+        return !isOutPeriod(otherStartDate, otherEndDate);
     }
 
     @Override
