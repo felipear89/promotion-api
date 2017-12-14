@@ -10,8 +10,8 @@ public class CampaignsBuilder {
         Campaign c = new Campaign();
         c.setId("1");
         c.setName("Campaign BlackFriday");
-        c.setStart(LocalDate.of(2017,11,20));
-        c.setEnd(LocalDate.of(2017,12,10));
+        c.setStart(LocalDate.of(2017,11,24));
+        c.setEnd(LocalDate.of(2017,11,30));
         return c;
     }
 

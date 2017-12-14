@@ -5,6 +5,8 @@ import com.company.promotionapi.repository.CampaignRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -16,8 +18,8 @@ public class CampaignController {
     private CampaignRepository campaignRepository;
 
     @GetMapping
-    public void list() {
-
+    public List<Campaign> list() {
+        return campaignRepository.list();
     }
 
     @PostMapping("")
@@ -27,18 +29,18 @@ public class CampaignController {
     }
 
     @GetMapping("/{id}")
-    public void findById() {
-
-    }
-
-    @PutMapping("/{id}")
-    public void update() {
-
+    public Campaign findById(@PathVariable(value="id") String id) {
+        return campaignRepository.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void delete() {
+    public void delete(@PathVariable(value="id") String id) {
+        campaignRepository.deleteById(id);
+    }
 
+    @PutMapping("/{id}")
+    public void update(@RequestBody Campaign campaign) {
+        campaignRepository.update(campaign);
     }
 
 }
