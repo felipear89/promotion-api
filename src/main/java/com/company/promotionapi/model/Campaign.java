@@ -1,5 +1,7 @@
 package com.company.promotionapi.model;
 
+import org.apache.tomcat.jni.Local;
+
 import java.time.LocalDate;
 
 public class Campaign {
@@ -42,6 +44,10 @@ public class Campaign {
 
     public void setEnd(LocalDate end) {
         this.end = end;
+    }
+
+    public boolean isSamePeriod(LocalDate start, LocalDate end) {
+        return this.start.isEqual(start) && this.end.isEqual(end);
     }
 
     @Override
