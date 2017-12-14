@@ -18,11 +18,14 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.company.promotionapi.CampaignsBuilder.campaignBlackFriday;
 
 import static com.company.promotionapi.CampaignsBuilder.campaignChristmas;
+import static com.company.promotionapi.CampaignsBuilder.campaignThisWeek;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -80,18 +83,20 @@ public class CampaignControllerTest {
     }
 
     @Test
-    public void listCampaign() throws Exception {
+    public void listActiveCampaigns() throws Exception {
 
         campaignRepository.insert(campaignBlackFriday());
         campaignRepository.insert(campaignChristmas());
+        campaignRepository.insert(campaignThisWeek());
+
+        LocalDate localDate = LocalDate.now();
+        String nowAsString = dateToString(localDate);
 
         mvc.perform(get("/campaigns")
             .contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].name", is("Campaign BlackFriday")))
-            .andExpect(jsonPath("$[0].start", is("2017-11-24")))
-            .andExpect(jsonPath("$[1].name", is("Campaign Christmas")))
-            .andExpect(jsonPath("$[1].start", is("2017-12-25")))
+            .andExpect(jsonPath("$[0].name", is("Campaign This Week")))
+            .andExpect(jsonPath("$[0].start", is(nowAsString)))
             .andReturn().getResponse().getContentAsString();
     }
 
@@ -126,5 +131,10 @@ public class CampaignControllerTest {
 
     private String campaignUrl(Campaign campaign) {
         return String.format("/campaigns/%s", campaign.getId());
+    }
+
+    private String dateToString(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-LLLL-dd");
+        return localDate.format(formatter);
     }
 }

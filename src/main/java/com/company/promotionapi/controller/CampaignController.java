@@ -19,17 +19,17 @@ public class CampaignController {
 
     @GetMapping
     public List<Campaign> list() {
-        return campaignRepository.list();
+        return campaignRepository.getNotExpiredCampaign();
     }
 
-    @PostMapping("")
+    @PostMapping
     @ResponseStatus(CREATED)
     public void create(@RequestBody Campaign campaign) {
         campaignRepository.insert(campaign);
     }
 
     @GetMapping("/{id}")
-    public Campaign findById(@PathVariable(value="id") String id) {
+    public Campaign show(@PathVariable(value="id") String id) {
         return campaignRepository.findById(id);
     }
 

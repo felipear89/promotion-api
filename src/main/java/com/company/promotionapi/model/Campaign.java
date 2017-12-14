@@ -10,6 +10,8 @@ public class Campaign {
 
     private String name;
 
+    private String teamId;
+
     private LocalDate start;
 
     private LocalDate end;
@@ -46,9 +48,16 @@ public class Campaign {
         this.end = end;
     }
 
+    public String getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
+    }
+
     private boolean isOutPeriod(LocalDate otherStartDate, LocalDate otherEndDate) {
-        return (otherStartDate.isBefore(start) && otherEndDate.isBefore(start)) ||
-                (otherStartDate.isAfter(end) && otherEndDate.isAfter(end));
+        return otherEndDate.isBefore(start) || otherStartDate.isAfter(end);
     }
 
     public boolean isInPeriod(LocalDate otherStartDate, LocalDate otherEndDate) {
@@ -63,5 +72,28 @@ public class Campaign {
                 ", start=" + start +
                 ", end=" + end +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Campaign campaign = (Campaign) o;
+
+        return id != null ? id.equals(campaign.id) : campaign.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    public boolean notEquals(Campaign campaign) {
+        return !this.equals(campaign);
+    }
+
+    public boolean isSameEndDate(LocalDate end) {
+        return this.end.isEqual(end);
     }
 }
