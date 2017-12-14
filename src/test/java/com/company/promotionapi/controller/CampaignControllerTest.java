@@ -67,26 +67,39 @@ public class CampaignControllerTest {
     }
 
     @Test
+    public void getCampaign() throws Exception {
+
+        Campaign campaign = campaignRepository.insert(campaignBlackFriday());
+        campaignRepository.insert(campaignChristmas());
+
+        mvc.perform(get(campaignUrl(campaign))
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(campaign.getName())))
+                .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
     public void listCampaign() throws Exception {
 
         campaignRepository.insert(campaignBlackFriday());
         campaignRepository.insert(campaignChristmas());
 
-        String response = mvc.perform(get("/campaigns")
-                .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Campaign BlackFriday")))
-                .andExpect(jsonPath("$[0].start", is("2017-11-24")))
-                .andExpect(jsonPath("$[1].name", is("Campaign Christmas")))
-                .andExpect(jsonPath("$[1].start", is("2017-12-25")))
-                .andReturn().getResponse().getContentAsString();
+        mvc.perform(get("/campaigns")
+            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].name", is("Campaign BlackFriday")))
+            .andExpect(jsonPath("$[0].start", is("2017-11-24")))
+            .andExpect(jsonPath("$[1].name", is("Campaign Christmas")))
+            .andExpect(jsonPath("$[1].start", is("2017-12-25")))
+            .andReturn().getResponse().getContentAsString();
     }
 
     @Test
     public void deleteCampaign() throws Exception {
         Campaign campaignBlackFriday = campaignRepository.insert(campaignBlackFriday());
 
-        mvc.perform(delete(String.format("/campaigns/%s", campaignBlackFriday.getId()))
+        mvc.perform(delete(campaignUrl(campaignBlackFriday))
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -101,7 +114,7 @@ public class CampaignControllerTest {
         String newCampaignName = "BLACK FRIDAY CRAZY MANAGER";
         campaignBlackFriday.setName(newCampaignName);
 
-        mvc.perform(put(String.format("/campaigns/%s", campaignBlackFriday.getId()))
+        mvc.perform(put(campaignUrl(campaignBlackFriday))
                 .content(mapper.writeValueAsString(campaignBlackFriday))
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -111,4 +124,7 @@ public class CampaignControllerTest {
 
     }
 
+    private String campaignUrl(Campaign campaign) {
+        return String.format("/campaigns/%s", campaign.getId());
+    }
 }
