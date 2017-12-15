@@ -3,7 +3,6 @@ package com.company.promotionapi.rules;
 import com.company.promotionapi.model.Campaign;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
