@@ -1,19 +1,30 @@
 package com.company.promotionapi.service;
 
+import com.company.promotionapi.listener.CampaignMessageListener;
 import com.company.promotionapi.model.Campaign;
+import com.company.promotionapi.producer.CampaignMessageProducer;
 import com.company.promotionapi.repository.CampaignRepository;
 import com.company.promotionapi.rules.IncrementCampaignPeriod;
 import com.company.promotionapi.rules.UpdatedCampaignObserver;
+import org.apache.log4j.Logger;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+
+import static com.company.promotionapi.config.RabbitMQConfiguration.UPDATE_CAMPAIGN_MESSAGE_QUEUE;
 
 @Service
 public class CampaignService {
 
+    private static final Logger log = Logger.getLogger(CampaignService.class);
+
     @Autowired
     private CampaignRepository campaignRepository;
+
+    @Autowired
+    private CampaignMessageProducer campaignMessageProducer;
 
     public void create(Campaign campaign) {
 
@@ -29,7 +40,10 @@ public class CampaignService {
 
         campaignRepository.insert(campaign);
 
+        
+
         campaignRepository.updateBatch(updatedCampaigns);
+        campaignMessageProducer.sendCampaignUpdateMessage(updatedCampaigns);
 
     }
 }
