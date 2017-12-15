@@ -4,6 +4,8 @@ import com.company.promotionapi.model.Campaign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 public class CampaignRepository {
@@ -81,4 +84,9 @@ public class CampaignRepository {
         return parameters;
     }
 
+    public void updateBatch(List<Campaign> campaigns) {
+        SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(campaigns.toArray());
+        jdbcTemplate.batchUpdate("UPDATE CAMPAIGN SET NAME = :name, TEAM_ID = :teamId, START = :start, END = :end WHERE ID = :id", params);
+
+    }
 }

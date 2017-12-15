@@ -11,6 +11,7 @@ import static java.util.Comparator.comparing;
 public class IncrementCampaignPeriod {
 
     public void incrementEndDate(List<Campaign> campaigns, Campaign campaign) {
+
         campaigns.stream()
                 .filter(c -> c.notEquals(campaign))
                 .sorted(comparing(Campaign::getEnd))
@@ -19,6 +20,11 @@ public class IncrementCampaignPeriod {
                     c.setEnd(endDatePlusOneDay);
                     avoidConflictEndDate(campaigns, c);
                 });
+
+        campaigns.stream()
+                .filter(c -> c.hasChanged())
+                .forEach(c -> c.notifyObservers());
+
     }
 
     private void avoidConflictEndDate(List<Campaign> campaigns, Campaign campaign) {

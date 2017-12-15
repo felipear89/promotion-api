@@ -2,6 +2,7 @@ package com.company.promotionapi.controller;
 
 import com.company.promotionapi.model.Campaign;
 import com.company.promotionapi.repository.CampaignRepository;
+import com.company.promotionapi.service.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,9 @@ public class CampaignController {
     @Autowired
     private CampaignRepository campaignRepository;
 
+    @Autowired
+    private CampaignService campaignService;
+
     @GetMapping
     public List<Campaign> list() {
         return campaignRepository.getNotExpiredCampaign();
@@ -25,7 +29,7 @@ public class CampaignController {
     @PostMapping
     @ResponseStatus(CREATED)
     public void create(@RequestBody Campaign campaign) {
-        campaignRepository.insert(campaign);
+        campaignService.create(campaign);
     }
 
     @GetMapping("/{id}")

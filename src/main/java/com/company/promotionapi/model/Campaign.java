@@ -1,8 +1,12 @@
 package com.company.promotionapi.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Campaign {
+public class Campaign extends Observable {
 
     private String id;
 
@@ -44,6 +48,7 @@ public class Campaign {
 
     public void setEnd(LocalDate end) {
         this.end = end;
+        setChanged();
     }
 
     public String getTeamId() {
@@ -60,6 +65,14 @@ public class Campaign {
 
     public boolean isInPeriod(LocalDate otherStartDate, LocalDate otherEndDate) {
         return !isOutPeriod(otherStartDate, otherEndDate);
+    }
+
+    public boolean notEquals(Campaign campaign) {
+        return !this.equals(campaign);
+    }
+
+    public boolean isSameEndDate(LocalDate end) {
+        return this.end.isEqual(end);
     }
 
     @Override
@@ -87,11 +100,4 @@ public class Campaign {
         return id != null ? id.hashCode() : 0;
     }
 
-    public boolean notEquals(Campaign campaign) {
-        return !this.equals(campaign);
-    }
-
-    public boolean isSameEndDate(LocalDate end) {
-        return this.end.isEqual(end);
-    }
 }
