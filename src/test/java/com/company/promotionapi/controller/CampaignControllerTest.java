@@ -26,6 +26,7 @@ import static com.company.promotionapi.CampaignsBuilder.campaignBlackFriday;
 
 import static com.company.promotionapi.CampaignsBuilder.campaignChristmas;
 import static com.company.promotionapi.CampaignsBuilder.campaignThisWeek;
+import static com.company.promotionapi.utils.DateUtils.dateToString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -133,8 +134,4 @@ public class CampaignControllerTest {
         return String.format("/campaigns/%s", campaign.getId());
     }
 
-    private String dateToString(LocalDate localDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-LLLL-dd");
-        return localDate.format(formatter);
-    }
 }

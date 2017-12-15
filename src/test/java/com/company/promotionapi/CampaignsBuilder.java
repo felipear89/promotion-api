@@ -3,6 +3,7 @@ package com.company.promotionapi;
 import com.company.promotionapi.model.Campaign;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class CampaignsBuilder {
 
@@ -43,6 +44,15 @@ public class CampaignsBuilder {
         c.setTeamId("spfc");
         c.setStart(LocalDate.now());
         c.setEnd(LocalDate.now().plusWeeks(1));
+        return c;
+    }
+
+    public static Campaign genericCampaign(String name, LocalDate start, LocalDate end) {
+        Campaign c = new Campaign();
+        c.setId(UUID.randomUUID().toString());
+        c.setName(name);
+        c.setStart(start);
+        c.setEnd(end);
         return c;
     }
 }
