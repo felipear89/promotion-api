@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 @Service
 public class CampaignService {
 
@@ -40,5 +42,10 @@ public class CampaignService {
         campaignRepository.updateBatch(updatedCampaigns);
         campaignMessageProducer.sendCampaignUpdateMessage(updatedCampaigns);
 
+    }
+
+    public void update(Campaign campaign) {
+        campaignRepository.update(campaign);
+        campaignMessageProducer.sendCampaignUpdateMessage(asList(campaign));
     }
 }

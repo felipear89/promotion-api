@@ -47,7 +47,7 @@ public class CampaignController {
 
     @PutMapping("/{id}")
     public void update(@RequestBody Campaign campaign) {
-        campaignRepository.update(campaign);
+        campaignService.update(campaign);
     }
 
 }
