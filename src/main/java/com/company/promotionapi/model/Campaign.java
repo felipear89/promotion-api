@@ -1,12 +1,13 @@
 package com.company.promotionapi.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Campaign extends Observable {
+public class Campaign extends Observable implements Serializable {
 
     private String id;
 
@@ -49,6 +50,7 @@ public class Campaign extends Observable {
     public void setEnd(LocalDate end) {
         this.end = end;
         setChanged();
+        notifyObservers();
     }
 
     public String getTeamId() {

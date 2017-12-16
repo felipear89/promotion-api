@@ -56,6 +56,15 @@ public class CampaignRepository {
                 new BeanPropertyRowMapper(Campaign.class));
     }
 
+    public List<Campaign> getActiveCampaignInPeriod(LocalDate start, LocalDate end) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("start", start);
+        params.put("end", end);
+
+        return jdbcTemplate.query("SELECT ID, NAME, TEAM_ID, START, END FROM CAMPAIGN WHERE END >= :start AND START <= :end ", params,
+                new BeanPropertyRowMapper(Campaign.class));
+    }
+
     public Campaign findById(String id) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);

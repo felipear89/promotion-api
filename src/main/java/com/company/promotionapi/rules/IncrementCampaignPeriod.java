@@ -20,11 +20,6 @@ public class IncrementCampaignPeriod {
                     c.setEnd(endDatePlusOneDay);
                     avoidConflictEndDate(campaigns, c);
                 });
-
-        campaigns.stream()
-                .filter(c -> c.hasChanged())
-                .forEach(c -> c.notifyObservers());
-
     }
 
     private void avoidConflictEndDate(List<Campaign> campaigns, Campaign campaign) {

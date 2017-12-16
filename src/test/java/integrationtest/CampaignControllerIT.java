@@ -1,39 +1,29 @@
-package com.company.promotionapi.controller;
+package integrationtest;
 
 import com.company.promotionapi.PromotionApiApplication;
 import com.company.promotionapi.model.Campaign;
 import com.company.promotionapi.repository.CampaignRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.company.promotionapi.CampaignsBuilder.campaignBlackFriday;
-
-import static com.company.promotionapi.CampaignsBuilder.campaignChristmas;
-import static com.company.promotionapi.CampaignsBuilder.campaignThisWeek;
+import static com.company.promotionapi.CampaignsBuilder.*;
 import static com.company.promotionapi.utils.DateUtils.dateToString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = PromotionApiApplication.class)
 @TestPropertySource(locations = "classpath:/application-integrationtest.properties")
 @AutoConfigureMockMvc
-public class CampaignControllerTest {
+public class CampaignControllerIT {
 
     @Autowired
     private MockMvc mvc;

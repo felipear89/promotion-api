@@ -28,19 +28,18 @@ public class CampaignService {
 
     public void create(Campaign campaign) {
 
-        List<Campaign> campaigns = campaignRepository.list();
+        List<Campaign> activeCampaignInPeriod = campaignRepository.getActiveCampaignInPeriod(campaign.getStart(), campaign.getEnd());
 
         UpdatedCampaignObserver observer = new UpdatedCampaignObserver();
-
-        campaigns.stream().forEach(c -> c.addObserver(observer));
-
-        new IncrementCampaignPeriod().incrementEndDate(campaigns, campaign);
+        activeCampaignInPeriod.forEach(c -> c.addObserver(observer));
+        activeCampaignInPeriod.add(campaign);
+        new IncrementCampaignPeriod().incrementEndDate(activeCampaignInPeriod, campaign);
 
         List<Campaign> updatedCampaigns = observer.getUpdatedCampaigns();
 
         campaignRepository.insert(campaign);
 
-        
+        log.info("Campaign "+ campaign.getName() +" created");
 
         campaignRepository.updateBatch(updatedCampaigns);
         campaignMessageProducer.sendCampaignUpdateMessage(updatedCampaigns);

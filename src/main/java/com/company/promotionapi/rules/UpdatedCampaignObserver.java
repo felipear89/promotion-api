@@ -2,26 +2,28 @@ package com.company.promotionapi.rules;
 
 import com.company.promotionapi.model.Campaign;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class UpdatedCampaignObserver implements Observer {
 
-    private List<Campaign> updatedCampaign;
+    private Set<Campaign> updatedCampaign;
 
     public UpdatedCampaignObserver() {
-        this.updatedCampaign = new ArrayList<>();
+        this.updatedCampaign = new HashSet<>();
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        Campaign c = (Campaign) arg;
-        updatedCampaign.add(c);
+        if (o != null && o instanceof Campaign) {
+            Campaign c = (Campaign) o;
+            updatedCampaign.add(c);
+        }
     }
 
     public List<Campaign> getUpdatedCampaigns() {
-        return updatedCampaign;
+        return new ArrayList<>(updatedCampaign);
     }
 }
