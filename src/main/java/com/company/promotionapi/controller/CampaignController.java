@@ -27,6 +27,11 @@ public class CampaignController {
         return campaignRepository.getNotExpiredCampaign();
     }
 
+    @GetMapping("/team/{teamId}")
+    public List<Campaign> findByTeam(@PathVariable(value="teamId") String teamId) {
+        return campaignRepository.findByTeamId(teamId);
+    }
+
     @PostMapping
     @ResponseStatus(CREATED)
     public void create(@RequestBody Campaign campaign) {

@@ -19,6 +19,7 @@ import java.util.List;
 
 import static com.company.promotionapi.CampaignsBuilder.*;
 import static com.company.promotionapi.utils.DateUtils.dateToString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -70,8 +71,7 @@ public class CampaignControllerIT {
         mvc.perform(get(campaignUrl(campaign))
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(campaign.getName())))
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(jsonPath("$.name", is(campaign.getName())));
     }
 
     @Test
@@ -88,8 +88,7 @@ public class CampaignControllerIT {
             .contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].name", is("Campaign This Week")))
-            .andExpect(jsonPath("$[0].start", is(nowAsString)))
-            .andReturn().getResponse().getContentAsString();
+            .andExpect(jsonPath("$[0].start", is(nowAsString)));
     }
 
     @Test
@@ -119,6 +118,23 @@ public class CampaignControllerIT {
         Campaign updatedCampaign = campaignRepository.findById(campaignBlackFriday.getId()).get();
         assertEquals(newCampaignName, updatedCampaign.getName());
 
+    }
+
+    @Test
+    public void findByTeamId() throws Exception {
+
+        Campaign campaignChapeco = genericCampaignTeamId("chapeco");
+
+        campaignRepository.insert(genericCampaignTeamId("sao paulo"));
+        campaignRepository.insert(genericCampaignTeamId("palmeiras"));
+        campaignRepository.insert(genericCampaignTeamId("santos"));
+        campaignChapeco = campaignRepository.insert(campaignChapeco);
+
+        mvc.perform(get("/campaigns/team/" + campaignChapeco.getId())
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is(campaignChapeco.getName())))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     private String campaignUrl(Campaign campaign) {

@@ -55,4 +55,14 @@ public class CampaignsBuilder {
         c.setEnd(end);
         return c;
     }
+
+    public static Campaign genericCampaignTeamId(String teamId) {
+        Campaign c = new Campaign();
+        c.setId(UUID.randomUUID().toString());
+        c.setName("Campaign By Team " + teamId);
+        c.setTeamId(teamId);
+        c.setStart(LocalDate.of(2016,12,25));
+        c.setEnd(LocalDate.of(2016,12,27));
+        return c;
+    }
 }

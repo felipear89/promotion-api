@@ -98,4 +98,13 @@ public class CampaignRepository {
         jdbcTemplate.batchUpdate("UPDATE CAMPAIGN SET NAME = :name, TEAM_ID = :teamId, START = :start, END = :end WHERE ID = :id", params);
 
     }
+
+    public List<Campaign> findByTeamId(String teamId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("teamId", teamId);
+
+        return jdbcTemplate.query("SELECT ID, NAME, TEAM_ID, START, END FROM CAMPAIGN WHERE ID = :teamId", params,
+                new BeanPropertyRowMapper(Campaign.class));
+    }
+
 }
