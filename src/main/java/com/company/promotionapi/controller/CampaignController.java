@@ -46,7 +46,8 @@ public class CampaignController {
     }
 
     @PutMapping("/{id}")
-    public void update(@RequestBody Campaign campaign) {
+    public void update(@PathVariable(value="id") String id, @RequestBody Campaign campaign) {
+        campaign.setId(id);
         campaignService.update(campaign);
     }
 
