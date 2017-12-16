@@ -19,5 +19,9 @@ services:
       - "15672:15672"
       - "5672:5672"
     hostname: my-rabbit
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
 volumes:
     db_data:

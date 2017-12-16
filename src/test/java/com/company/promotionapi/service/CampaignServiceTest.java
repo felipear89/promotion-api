@@ -50,6 +50,7 @@ public class CampaignServiceTest {
         List<Campaign> campaigns = newArrayList(c1, c2);
 
         when(campaignRepository.getActiveCampaignInPeriod(any(), any())).thenReturn(campaigns);
+        when(campaignRepository.insert(any())).thenReturn(c3);
 
         campaignService.create(c3);
 

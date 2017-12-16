@@ -4,6 +4,7 @@ import com.company.promotionapi.model.Campaign;
 import com.company.promotionapi.repository.CampaignRepository;
 import com.company.promotionapi.service.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class CampaignController {
         return campaignRepository.getNotExpiredCampaign();
     }
 
+    @Cacheable(value = "campaign-by-team", key = "#teamId")
     @GetMapping("/team/{teamId}")
     public List<Campaign> findByTeam(@PathVariable(value="teamId") String teamId) {
         return campaignRepository.findByTeamId(teamId);

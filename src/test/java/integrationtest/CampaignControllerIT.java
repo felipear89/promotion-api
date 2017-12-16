@@ -130,7 +130,7 @@ public class CampaignControllerIT {
         campaignRepository.insert(genericCampaignTeamId("santos"));
         campaignChapeco = campaignRepository.insert(campaignChapeco);
 
-        mvc.perform(get("/campaigns/team/" + campaignChapeco.getId())
+        mvc.perform(get("/campaigns/team/" + campaignChapeco.getTeamId())
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", is(campaignChapeco.getName())))

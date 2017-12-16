@@ -2,6 +2,7 @@ package com.company.promotionapi.repository;
 
 import com.company.promotionapi.model.Campaign;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -103,7 +104,7 @@ public class CampaignRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("teamId", teamId);
 
-        return jdbcTemplate.query("SELECT ID, NAME, TEAM_ID, START, END FROM CAMPAIGN WHERE ID = :teamId", params,
+        return jdbcTemplate.query("SELECT ID, NAME, TEAM_ID, START, END FROM CAMPAIGN WHERE TEAM_ID = :teamId", params,
                 new BeanPropertyRowMapper(Campaign.class));
     }
 

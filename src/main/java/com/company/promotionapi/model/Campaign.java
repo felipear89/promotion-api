@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Observable;
 
-public class Campaign extends Observable {
+public class Campaign extends Observable implements Serializable {
 
     private String id;
 
