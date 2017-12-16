@@ -30,13 +30,13 @@ public class CampaignRepository {
         return campaign;
     }
 
-    public Campaign update(Campaign campaign) {
+    public int update(Campaign campaign) {
 
         Map<String, Object> params = mapColumns(campaign);
 
-        jdbcTemplate.update("UPDATE CAMPAIGN SET ID = :id, NAME = :name, TEAM_ID = :teamId, START = :start, END = :end WHERE ID = :id", params);
+        int updated = jdbcTemplate.update("UPDATE CAMPAIGN SET ID = :id, NAME = :name, TEAM_ID = :teamId, START = :start, END = :end WHERE ID = :id", params);
 
-        return campaign;
+        return updated;
     }
 
     public List<Campaign> list() {

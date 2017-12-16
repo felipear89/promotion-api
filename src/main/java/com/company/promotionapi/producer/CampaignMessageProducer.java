@@ -2,6 +2,7 @@ package com.company.promotionapi.producer;
 
 import com.company.promotionapi.model.Campaign;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class CampaignMessageProducer {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(CampaignMessageProducer.class);
+    private static final Logger log = LoggerFactory.getLogger(CampaignMessageProducer.class);
 
     public void sendCampaignUpdateMessage(List<Campaign> campaigns) {
         if (!isEmpty(campaigns)) {

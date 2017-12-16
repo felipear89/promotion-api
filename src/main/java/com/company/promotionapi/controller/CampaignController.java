@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping(path = "/campaigns", produces = APPLICATION_JSON_VALUE)
@@ -34,15 +35,15 @@ public class CampaignController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void create(@RequestBody Campaign campaign) {
-        campaignService.create(campaign);
+    public Campaign create(@RequestBody Campaign campaign) {
+        return campaignService.create(campaign);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Campaign> show(@PathVariable(value="id") String id) {
         return campaignRepository.findById(id)
-                .map(c -> new ResponseEntity<>(c, OK))
-                .orElse(new ResponseEntity<>(NO_CONTENT));
+                .map(c -> ok(c))
+                .orElse(noContent().build());
     }
 
     @DeleteMapping("/{id}")
@@ -51,9 +52,13 @@ public class CampaignController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable(value="id") String id, @RequestBody Campaign campaign) {
+    public ResponseEntity update(@PathVariable(value="id") String id, @RequestBody Campaign campaign) {
         campaign.setId(id);
-        campaignService.update(campaign);
+        boolean updated = campaignService.update(campaign);
+        if (!updated) {
+            return notFound().build();
+        }
+        return ok().build();
     }
 
 }

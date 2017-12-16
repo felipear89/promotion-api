@@ -5,6 +5,7 @@ import com.company.promotionapi.producer.CampaignMessageProducer;
 import com.company.promotionapi.repository.CampaignRepository;
 import com.company.promotionapi.rules.IncrementCampaignPeriod;
 import com.company.promotionapi.rules.UpdatedCampaignObserver;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import static java.util.Arrays.asList;
 @Service
 public class CampaignService {
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(CampaignService.class);
+    private static final Logger log = LoggerFactory.getLogger(CampaignService.class);
 
     @Autowired
     private CampaignRepository campaignRepository;
@@ -24,7 +25,7 @@ public class CampaignService {
     @Autowired
     private CampaignMessageProducer campaignMessageProducer;
 
-    public void create(Campaign campaign) {
+    public Campaign create(Campaign campaign) {
 
         List<Campaign> activeCampaignInPeriod = campaignRepository.getActiveCampaignInPeriod(campaign.getStart(), campaign.getEnd());
 
@@ -35,17 +36,19 @@ public class CampaignService {
 
         List<Campaign> updatedCampaigns = observer.getUpdatedCampaigns();
 
-        campaignRepository.insert(campaign);
+        campaign = campaignRepository.insert(campaign);
 
         log.info("Campaign "+ campaign.getName() +" created");
 
         campaignRepository.updateBatch(updatedCampaigns);
         campaignMessageProducer.sendCampaignUpdateMessage(updatedCampaigns);
 
+        return campaign;
     }
 
-    public void update(Campaign campaign) {
-        campaignRepository.update(campaign);
+    public boolean update(Campaign campaign) {
+        int updated = campaignRepository.update(campaign);
         campaignMessageProducer.sendCampaignUpdateMessage(asList(campaign));
+        return updated > 0 ? true : false;
     }
 }
