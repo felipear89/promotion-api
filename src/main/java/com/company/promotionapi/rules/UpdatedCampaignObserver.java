@@ -3,9 +3,6 @@ package com.company.promotionapi.rules;
 import com.company.promotionapi.model.Campaign;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 public class UpdatedCampaignObserver implements Observer {
 

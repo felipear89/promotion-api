@@ -116,7 +116,7 @@ public class CampaignControllerIT {
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        Campaign updatedCampaign = campaignRepository.findById(campaignBlackFriday.getId());
+        Campaign updatedCampaign = campaignRepository.findById(campaignBlackFriday.getId()).get();
         assertEquals(newCampaignName, updatedCampaign.getName());
 
     }

@@ -10,7 +10,6 @@ import static com.company.promotionapi.CampaignsBuilder.genericCampaign;
 import static com.company.promotionapi.utils.DateUtils.dateToString;
 import static java.time.LocalDate.of;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
 
 public class IncrementCampaignPeriodTest {
 

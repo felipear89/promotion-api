@@ -4,11 +4,12 @@ import com.company.promotionapi.model.Campaign;
 import com.company.promotionapi.repository.CampaignRepository;
 import com.company.promotionapi.service.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -33,8 +34,10 @@ public class CampaignController {
     }
 
     @GetMapping("/{id}")
-    public Campaign show(@PathVariable(value="id") String id) {
-        return campaignRepository.findById(id);
+    public ResponseEntity<Campaign> show(@PathVariable(value="id") String id) {
+        return campaignRepository.findById(id)
+                .map(c -> new ResponseEntity<>(c, OK))
+                .orElse(new ResponseEntity<>(NO_CONTENT));
     }
 
     @DeleteMapping("/{id}")

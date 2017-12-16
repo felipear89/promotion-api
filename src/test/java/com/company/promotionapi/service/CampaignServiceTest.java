@@ -3,32 +3,22 @@ package com.company.promotionapi.service;
 import com.company.promotionapi.model.Campaign;
 import com.company.promotionapi.producer.CampaignMessageProducer;
 import com.company.promotionapi.repository.CampaignRepository;
-import org.assertj.core.util.Lists;
 import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import static com.company.promotionapi.CampaignsBuilder.genericCampaign;
 import static java.time.LocalDate.of;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static com.company.promotionapi.CampaignsBuilder.*;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.contains;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CampaignServiceTest {

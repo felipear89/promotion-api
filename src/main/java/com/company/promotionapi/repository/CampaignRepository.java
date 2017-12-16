@@ -8,14 +8,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
+
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Repository
 public class CampaignRepository {
@@ -65,12 +61,16 @@ public class CampaignRepository {
                 new BeanPropertyRowMapper(Campaign.class));
     }
 
-    public Campaign findById(String id) {
+    public Optional<Campaign> findById(String id) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
 
-        return (Campaign) jdbcTemplate.query("SELECT ID, NAME, TEAM_ID, START, END FROM CAMPAIGN WHERE ID = :id", params,
-                new BeanPropertyRowMapper(Campaign.class)).get(0);
+        List<Campaign> campaigns = jdbcTemplate.query("SELECT ID, NAME, TEAM_ID, START, END FROM CAMPAIGN WHERE ID = :id", params,
+                new BeanPropertyRowMapper(Campaign.class));
+        if (isEmpty(campaigns)) {
+            return Optional.empty();
+        }
+        return Optional.of(campaigns.get(0));
     }
 
     public void deleteById(String id) {
