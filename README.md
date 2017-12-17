@@ -15,7 +15,7 @@ A web application to control campaigns
 | GET /team/{teamId}     | Get campaigns by teamId |
 
 ## How to run
-You need to start our dependencies before start through docker-compose. Run the below command
+You need to start our dependencies before run integration tests or start the application. Run the below command
 ```
 docker-compose up -d
 ```
