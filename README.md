@@ -1,4 +1,4 @@
-# promotion-api
+# Campaign Service
 
 ## Description
 A web application to control campaigns
