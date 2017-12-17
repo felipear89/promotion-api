@@ -60,7 +60,7 @@ public class CampaignController {
         if (!updated) {
             return notFound().build();
         }
-        return ok().build();
+        return ok(campaign);
     }
 
 }
